@@ -24,13 +24,17 @@ namespace SBBScan
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ProductContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("store_localdb")));
             services.AddControllersWithViews();
-            services.AddDbContext<ProductContext>(options => options.UseSqlServer(Configuration.GetConnectionString("store_localdb")));
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ProductContext context)
         {
+            context.Database.EnsureCreated();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,7 +53,7 @@ namespace SBBScan
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Products}/{action=Index}/{id?}");
             });
         }
     }
