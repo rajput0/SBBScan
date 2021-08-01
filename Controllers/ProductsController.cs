@@ -54,7 +54,7 @@ namespace SBBScan.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Barcode,Name,Description,Price,TotalSoldToday")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Barcode,Name,Price,TotalSoldToday")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -150,10 +150,19 @@ namespace SBBScan.Controllers
             return _context.Products.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> Home(int? id)
+        public IActionResult Home(int? id)
         {
-            
+
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Home(string barcode)
+        {
+            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Barcode.Equals(barcode));
+            if (product == null) return View();
+
+            return View(product);
         }
     }
 }

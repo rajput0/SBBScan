@@ -1,24 +1,23 @@
-﻿@model IEnumerable<SBBScan.Models.Product>
+﻿@model SBBScan.Models.Product
 
 @{
     ViewData["Title"] = "Home";
 }
 
-<h1>Home</h1>
 
-<p>
-    <a asp-action="Index">View All</a>
-</p>
+<div class="mt-4">
+    <form asp-action="Home">
+        <h4 class="text-center">Barcode:</h4>
+        <input type="text" autofocus class="form-control" name="barcode" asp-id="input_barcode" />
 
-<h4>Barcode:</h4>
-    <input type="text" autofocus class="form-control" name="barcode" asp-id="input_barcode" />
+        <br />
+        <button class="btn btn-primary invisible" type="submit">Submit</button>
+    </form>
+</div>
 
-<br />
-<button class="btn btn-primary" type="submit">Submit</button>
-<br />
-<br />
-<br />
-<h3><span> Product Name Display </span></h3>
-<h1><span> $0.00 </span></h1>
+<div class="mt-3 text-center">
+    <h3><span> @(Html.DisplayFor(model => model.Name)) </span></h3>
 
+    <h1><span> @(Html.DisplayFor(model => model.Price)) </span></h1>
+</div>
 
